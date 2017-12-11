@@ -1,1 +1,2 @@
-"# thai-sound" 
+"Thai-sound Project"
+"Write by Thanachote Khaosanit"
