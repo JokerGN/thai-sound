@@ -1,15 +1,9 @@
-import NavBar from '../components/NavBar'
-import SideNav from '../components/SideNav'
-import {Grid, Col, Row} from 'react-styled-flexboxgrid'
+import Button from 'material-ui/Button'
 
-export default () => (
-  <div>
-    <NavBar />
-    <Grid>
-    <Row>
-      <Col xs={3} md={3}><SideNav /></Col>
-      <Col xs={6} md={9}><NavBar /></Col>
-    </Row>
-  </Grid>
-  </div>
+const Index = () => (
+  <Button raised color='primary'>
+    Hello World
+  </Button>
 )
+
+export default Index
