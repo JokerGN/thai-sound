@@ -11,21 +11,6 @@ const styles = {
 };
 
 class Index extends Component {
-  state = {
-    open: false,
-  };
-
-  handleClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
-
-  handleClick = () => {
-    this.setState({
-      open: true,
-    });
-  };
 
   render() {
     return (
