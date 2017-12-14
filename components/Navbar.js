@@ -55,8 +55,11 @@ const styles = theme => ({
   flex: {
     flex: 1
   },
+  hide: {
+    display: 'none'
+  },
   menuButton: {
-    marginLeft: -12,
+    marginLeft: 12,
     marginRight: 20
   },
 })
@@ -87,7 +90,7 @@ class Navbar extends React.Component {
         open={open}
       >
         <div className={classes.drawerInner}>
-          <div>
+          <div className={classes.drawerHeader}>
             <IconButton onClick={this.handleDrawerClose}>
               <ChevronLeftIcon />
             </IconButton>
@@ -108,14 +111,15 @@ class Navbar extends React.Component {
               color='contrast'
               aria-label="open menu"
               onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, open && classes)}
+              className={classNames(classes.menuButton, open && classes.hide)}
             >
               <MenuIcon />
             </IconButton>
-            <Typography type='title' color='inherit' className={classes.flex}>Thai-sound</Typography>
+            <Typography type='title' color='inherit' className={classes.flex} noWrap>Thai-sound</Typography>
             <Button color="contrast">เข้าสู่ระบบ</Button>
           </Toolbar>
         </AppBar>
+        {drawer}
       </div>
       </div>
     )
