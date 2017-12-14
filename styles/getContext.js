@@ -8,6 +8,7 @@ import grey from 'material-ui/colors/grey';
 import createGenerateClassName from 'material-ui/styles/createGenerateClassName';
 
 const theme = createMuiTheme({
+  direction: 'ltr',
   palette: {
     primary: blue,
     type: 'light'
