@@ -28,19 +28,9 @@ const styles = theme => ({
   },
   appBar: {
     position: 'absolute',
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
   },
   drawerPaper: {
+    marginTop: 65,
     position: 'relative',
     height: '100%',
     width: drawerWidth
@@ -58,6 +48,36 @@ const styles = theme => ({
   hide: {
     display: 'none'
   },
+  content: {
+    width: '100%',
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    height: 'calc(100% - 56px)',
+    marginTop: 56,
+    [theme.breakpoints.up('sm')]: {
+      content: {
+        height: 'calc(100% - 64px)',
+        marginTop: 64,
+      },
+    },
+  },
+  'content-left': {
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  'contentShift-left': {
+    marginLeft: 0,
+  },
   menuButton: {
     marginLeft: 12,
     marginRight: 20
@@ -70,12 +90,8 @@ class Navbar extends React.Component {
     open: false
   }
 
-  handleDrawerOpen = () => (
-    this.setState({ open: true })
-  )
-
-  handleDrawerClose = () => (
-    this.setState({ open: false })
+  handleToggleDrawer = () => (
+    this.setState({ open: !this.state.open })
   )
 
   render () {
@@ -91,9 +107,7 @@ class Navbar extends React.Component {
       >
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
+
           </div>
         </div>
       </Drawer>
@@ -102,16 +116,13 @@ class Navbar extends React.Component {
     return (
       <div className={classes.root}>
       <div className={classes.appFrame}>
-        <AppBar className={classNames(classes.appBar, {
-          [classes.appBarShift]: open
-        })}
-        >
-          <Toolbar disableGutters={!open}>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
             <IconButton
               color='contrast'
               aria-label="open menu"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, open && classes.hide)}
+              onClick={this.handleToggleDrawer}
+              className={classes.menuButton}
             >
               <MenuIcon />
             </IconButton>
@@ -120,6 +131,14 @@ class Navbar extends React.Component {
           </Toolbar>
         </AppBar>
         {drawer}
+        <main
+          className={classNames(classes.content, classes['content-left'], {
+            [classes.contentShift]: open,
+            [classes['contentShift-left']]: open
+          })}
+        >
+          <Typography>Thai-sound content</Typography>
+        </main>
       </div>
       </div>
     )
