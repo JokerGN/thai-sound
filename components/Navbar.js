@@ -90,14 +90,6 @@ class Navbar extends React.Component {
     open: false
   }
 
-  handleDrawerOpen = () => (
-    this.setState({ open: true })
-  )
-
-  handleDrawerClose = () => (
-    this.setState({ open: false })
-  )
-
   handleToggleDrawer = () => (
     this.setState({ open: !this.state.open })
   )
