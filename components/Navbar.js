@@ -10,6 +10,7 @@ import MenuIcon from 'material-ui-icons/Menu'
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
 import Button from 'material-ui/Button'
 import Drawer from 'material-ui/Drawer'
+import Menu from './Menu'
 
 const drawerWidth = 240
 
@@ -107,7 +108,7 @@ class Navbar extends React.Component {
       >
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
-
+            <Menu />
           </div>
         </div>
       </Drawer>
