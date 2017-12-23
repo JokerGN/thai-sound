@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import LoginCard from '../components/LoginCard'
+import Navbar from '../components/Navbar'
 import { withStyles } from 'material-ui/styles'
 import withRoot from '../components/withRoot'
-import withRedux from 'next-redux-wrapper'
-import initializeStore from '../store/initializeStore'
 
 const styles = {
   root: {
@@ -12,19 +10,19 @@ const styles = {
   },
 }
 
-class Index extends Component {
+class Dashboard extends Component {
 
   render() {
     return (
       <div className={this.props.classes.root}>
-        <LoginCard />
+        <Navbar />
       </div>
     )
   }
 }
 
-Index.propTypes = {
+Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withRedux(initializeStore)(withRoot(withStyles(styles)(Index)))
+export default withRoot(withStyles(styles)(Dashboard))
