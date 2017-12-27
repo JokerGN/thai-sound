@@ -4,6 +4,7 @@ import LoginCard from '../components/LoginCard'
 import { withStyles } from 'material-ui/styles'
 import withRoot from '../components/withRoot'
 import withRedux from 'next-redux-wrapper'
+import withReduxSaga from 'next-redux-saga'
 import initializeStore from '../store/initializeStore'
 
 const styles = {
@@ -27,4 +28,4 @@ Index.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withRedux(initializeStore)(withRoot(withStyles(styles)(Index)))
+export default withRedux(initializeStore)(withReduxSaga((withRoot(withStyles(styles)(Index)))))
