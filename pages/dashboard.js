@@ -3,6 +3,11 @@ import PropTypes from 'prop-types'
 import Navbar from '../components/Navbar'
 import { withStyles } from 'material-ui/styles'
 import withRoot from '../components/withRoot'
+import withRedux from 'next-redux-wrapper'
+import withReduxSaga from 'next-redux-saga'
+import initializeStore from '../store/initializeStore'
+import Cookie from 'js-cookie'
+import Router from 'next/router'
 
 const styles = {
   root: {
@@ -11,6 +16,12 @@ const styles = {
 }
 
 class Dashboard extends Component {
+
+  componentDidMount() {
+    if (!(Cookie.get('username') && Cookie.get('role'))) {
+      Router.push('/')
+    }
+  }
 
   render() {
     return (
@@ -25,4 +36,4 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withRoot(withStyles(styles)(Dashboard))
+export default withRedux(initializeStore)(withReduxSaga((withRoot(withStyles(styles)(Dashboard)))))

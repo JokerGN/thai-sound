@@ -10,6 +10,10 @@ import MenuIcon from 'material-ui-icons/Menu'
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
 import Button from 'material-ui/Button'
 import Drawer from 'material-ui/Drawer'
+import Router from 'next/router'
+import Cookie from 'js-cookie'
+import { logoutAction } from '../actions/loginAction'
+import { connect } from 'react-redux'
 import Menu from './Menu'
 
 const drawerWidth = 240
@@ -95,9 +99,17 @@ class Navbar extends React.Component {
     this.setState({ open: !this.state.open })
   )
 
+  handleLogout() {
+    this.props.dispatch(logoutAction())
+    Cookie.remove('username')
+    Cookie.remove('role')
+    Router.push('/')
+  }
+
   render () {
-    const { classes, theme } = this.props
+    const { classes} = this.props
     const { open } = this.state
+    const username = Cookie.get('username')
     const drawer = (
       <Drawer
         type='persistent'
@@ -128,7 +140,9 @@ class Navbar extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography type='title' color='inherit' className={classes.flex} noWrap>Thai-sound</Typography>
-            <Button color="contrast">เข้าสู่ระบบ</Button>
+            <Typography color='inherit'>Username : {username}</Typography>
+            &nbsp;&nbsp;
+            <Button color="contrast" onClick={this.handleLogout.bind(this)}>Logout</Button>
           </Toolbar>
         </AppBar>
         {drawer}
@@ -146,9 +160,12 @@ class Navbar extends React.Component {
   }
 }
 
-Navbar.PropTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+Navbar.propTypes = {
+  classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(Navbar)
+const mapStateToProps = ({user}) => ({
+  user: user.data
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(Navbar))
