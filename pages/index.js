@@ -5,6 +5,8 @@ import { withStyles } from 'material-ui/styles'
 import withRoot from '../components/withRoot'
 import withRedux from 'next-redux-wrapper'
 import withReduxSaga from 'next-redux-saga'
+import Cookie from 'js-cookie'
+import Router from 'next/router'
 import initializeStore from '../store/initializeStore'
 
 const styles = {
@@ -14,6 +16,11 @@ const styles = {
 }
 
 class Index extends Component {
+  componentDidMount() {
+    if (Cookie.get('username')) {
+      Router.push('/dashboard')
+    }
+  }
   render() {
     return (
       <div className={this.props.classes.root}>
