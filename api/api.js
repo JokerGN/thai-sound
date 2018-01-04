@@ -10,3 +10,14 @@ export const userData = (payload) => {
     return res.data
   })
 }
+
+export const registerData = (payload) => {
+  return Axios({
+    method: 'POST',
+    url: 'http://localhost:3001/auth/register',
+    data: payload
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
