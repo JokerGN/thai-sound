@@ -15,6 +15,7 @@ import Cookie from 'js-cookie'
 import { logoutAction } from '../actions/loginAction'
 import { connect } from 'react-redux'
 import Menu from './Menu'
+import UserTable from './UserTable'
 
 const drawerWidth = 240
 
@@ -102,7 +103,6 @@ class Navbar extends React.Component {
   handleLogout() {
     this.props.dispatch(logoutAction())
     Cookie.remove('username')
-    Cookie.remove('role')
     Router.push('/')
   }
 
@@ -110,6 +110,7 @@ class Navbar extends React.Component {
     const { classes} = this.props
     const { open } = this.state
     const username = Cookie.get('username')
+    const component = this.props.component
     const drawer = (
       <Drawer
         type='persistent'
@@ -152,7 +153,15 @@ class Navbar extends React.Component {
             [classes['contentShift-left']]: open
           })}
         >
-          <Typography>Thai-sound content</Typography>
+          {(() => {
+            if (component === 'index') {
+              return <p>This is index content</p>
+            } else if (component === 'sound') {
+              return <p>This is sound content</p>
+            } else {
+              return <UserTable />
+            }
+          })()}
         </main>
       </div>
       </div>
@@ -164,8 +173,8 @@ Navbar.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-const mapStateToProps = ({user}) => ({
-  user: user.data
+const mapStateToProps = ({component}) => ({
+  component: component
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(Navbar))

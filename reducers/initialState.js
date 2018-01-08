@@ -1,4 +1,5 @@
 export default {
   user: [],
-  register: []
+  register: [],
+  component: 'index'
 }

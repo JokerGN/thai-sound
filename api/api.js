@@ -21,3 +21,13 @@ export const registerData = (payload) => {
     return res.data
   })
 }
+
+export const getUserData = () => {
+  return Axios({
+    method: 'POST',
+    url: 'http://localhost:3001/user/showall'
+  })
+  .then(function (res) {
+    return res.data
+  })
+}

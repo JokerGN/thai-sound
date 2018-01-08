@@ -5,6 +5,8 @@ import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import Dashboard from 'material-ui-icons/Dashboard'
 import Assignment from 'material-ui-icons/Assignment'
 import AccouintBox from 'material-ui-icons/AccountBox'
+import { connect } from 'react-redux'
+import { indexAction, soundAction, userAction } from '../actions/selectAction'
 
 const styles = theme => ({
   root: {
@@ -14,35 +16,53 @@ const styles = theme => ({
   }
 })
 
-const Menu = (props) => {
-  const { classes } = props
+class Menu extends React.Component {
 
-  return (
-    <List className={classes.root}>
-      <ListItem button>
-        <ListItemIcon>
-          <Dashboard />
-        </ListItemIcon>
-        <ListItemText inset primary='หน้าหลัก' />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <Assignment />
-        </ListItemIcon>
-        <ListItemText inset primary='จัดการเสียง' />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <AccouintBox />
-        </ListItemIcon>
-        <ListItemText inset primary='จัดการผู้ใช้' />
-      </ListItem>
-    </List>
-  )
+  handleIndexComponent() {
+    this.props.dispatch(indexAction())
+  }
+
+  handleSoundComponent() {
+    this.props.dispatch(soundAction())
+  }
+
+  handleUserComponent() {
+    this.props.dispatch(userAction())
+  }
+
+  render () {
+    const { classes } = this.props
+    return (
+      <List className={classes.root}>
+        <ListItem button onClick={this.handleIndexComponent.bind(this)}>
+          <ListItemIcon>
+            <Dashboard />
+          </ListItemIcon>
+          <ListItemText inset primary='หน้าหลัก' />
+        </ListItem>
+        <ListItem button onClick={this.handleSoundComponent.bind(this)}>
+          <ListItemIcon>
+            <Assignment />
+          </ListItemIcon>
+          <ListItemText inset primary='จัดการเสียง' />
+        </ListItem>
+        <ListItem button onClick={this.handleUserComponent.bind(this)}>
+          <ListItemIcon>
+            <AccouintBox />
+          </ListItemIcon>
+          <ListItemText inset primary='จัดการผู้ใช้' />
+        </ListItem>
+      </List>
+    )
+  }
 }
 
 Menu.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(Menu)
+const mapStateToProps = ({component}) => ({
+  component: component
+})
+
+export default connect(mapStateToProps)(withStyles(styles)(Menu))
