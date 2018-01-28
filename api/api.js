@@ -5,7 +5,7 @@ const serverUrl = 'http://thai-sound-api.chaluline.com'
 export const userData = (payload) => {
   return Axios({
     method: 'POST',
-    url: `${ServerUrl}/auth/login`,
+    url: `${serverUrl}/auth/login`,
     data: payload
   })
   .then(function (res) {
@@ -16,7 +16,7 @@ export const userData = (payload) => {
 export const registerData = (payload) => {
   return Axios({
     method: 'POST',
-    url: `${ServerUrl}/auth/register`,
+    url: `${serverUrl}/auth/register`,
     data: payload
   })
   .then(function (res) {
@@ -27,7 +27,7 @@ export const registerData = (payload) => {
 export const getUserData = () => {
   return Axios({
     method: 'GET',
-    url: `${ServerUrl}/user/showall`
+    url: `${serverUrl}/user/showall`
   })
   .then(function (res) {
     return res.data

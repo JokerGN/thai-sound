@@ -55,7 +55,7 @@ class LoginCard extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user[0].status !== 'active') {
+    if (nextProps.user.status !== 'active') {
       this.handleOpenDialog()
     } else {
       Router.push('/dashboard')
