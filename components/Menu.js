@@ -11,7 +11,7 @@ import { indexAction, soundAction, userAction } from '../actions/selectAction'
 const styles = theme => ({
   root: {
     width: '100%',
-    maxWidth: 360,
+    maxWidth: 300,
     background: theme.palette.background.paper,
   }
 })

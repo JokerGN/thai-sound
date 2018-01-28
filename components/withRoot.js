@@ -10,6 +10,7 @@ const styles = theme => ({
       background: theme.palette.background.default,
       WebkitFontSmoothing: 'antialiased', // Antialiasing.
       MozOsxFontSmoothing: 'grayscale', // Antialiasing.
+      'font-family': 'Kanit'
     },
     body: {
       margin: 0,

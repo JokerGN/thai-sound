@@ -16,8 +16,9 @@ import { logoutAction } from '../actions/loginAction'
 import { connect } from 'react-redux'
 import Menu from './Menu'
 import UserTable from './UserTable'
+import Grid from 'material-ui/Grid'
 
-const drawerWidth = 240
+const drawerWidth = 150
 
 const styles = theme => ({
   root: {
@@ -58,7 +59,7 @@ const styles = theme => ({
     width: '100%',
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing.unit * 2,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -73,7 +74,7 @@ const styles = theme => ({
     },
   },
   'content-left': {
-    marginLeft: -drawerWidth,
+    marginLeft: -drawerWidth
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -82,7 +83,7 @@ const styles = theme => ({
     }),
   },
   'contentShift-left': {
-    marginLeft: 0,
+    marginLeft: 0
   },
   menuButton: {
     marginLeft: 12,
@@ -159,7 +160,11 @@ class Navbar extends React.Component {
             } else if (component === 'sound') {
               return <p>This is sound content</p>
             } else {
-              return <UserTable />
+              return (
+                <Grid item md={12} >
+                  <UserTable />
+                </Grid>
+              )
             }
           })()}
         </main>
