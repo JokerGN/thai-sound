@@ -4,14 +4,19 @@ import { create, SheetsRegistry } from 'jss';
 import preset from 'jss-preset-default';
 import { createMuiTheme } from 'material-ui/styles';
 import blue from 'material-ui/colors/blue';
-import grey from 'material-ui/colors/grey';
+import yellow from 'material-ui/colors/yellow';
 import createGenerateClassName from 'material-ui/styles/createGenerateClassName';
 
 const theme = createMuiTheme({
   direction: 'ltr',
   palette: {
     primary: blue,
-    type: 'light'
+    secondary: yellow,
+    type: 'light',
+    button: {
+      width: 10,
+      height: 10
+    }
   },
 });
 

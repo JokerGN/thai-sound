@@ -1,5 +1,6 @@
 export default {
   user: [],
   register: [],
-  component: 'index'
+  component: 'index',
+  userList: []
 }
