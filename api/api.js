@@ -1,9 +1,11 @@
 import Axios from 'axios'
 
+const serverUrl = 'http://thai-sound-api.chaluline.com'
+
 export const userData = (payload) => {
   return Axios({
     method: 'POST',
-    url: 'http://localhost:3001/auth/login',
+    url: `${ServerUrl}/auth/login`,
     data: payload
   })
   .then(function (res) {
@@ -14,7 +16,7 @@ export const userData = (payload) => {
 export const registerData = (payload) => {
   return Axios({
     method: 'POST',
-    url: 'http://localhost:3001/auth/register',
+    url: `${ServerUrl}/auth/register`,
     data: payload
   })
   .then(function (res) {
@@ -24,8 +26,8 @@ export const registerData = (payload) => {
 
 export const getUserData = () => {
   return Axios({
-    method: 'POST',
-    url: 'http://localhost:3001/user/showall'
+    method: 'GET',
+    url: `${ServerUrl}/user/showall`
   })
   .then(function (res) {
     return res.data
