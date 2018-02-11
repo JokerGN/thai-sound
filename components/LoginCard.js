@@ -59,7 +59,7 @@ class LoginCard extends React.Component {
       this.handleOpenDialog()
     } else {
       Router.push('/dashboard')
-      Cookie.set('username',nextProps.user[0].firstName)
+      Cookie.set('username',nextProps.user.name)
     }
   }
 
