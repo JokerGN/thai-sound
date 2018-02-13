@@ -53,6 +53,7 @@ class UserTable extends React.Component {
           table {
             width: 100%;
             text-align: center;
+            overflow-x: "auto";
           },
           button {
             font-family: Kanit;
