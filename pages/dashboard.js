@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Navbar from '../components/Navbar'
+import PageMenu from '../components/PageMenu'
 import { withStyles } from 'material-ui/styles'
 import withRoot from '../components/withRoot'
 import withRedux from 'next-redux-wrapper'
@@ -26,7 +26,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div className={this.props.classes.root}>
-        <Navbar />
+        <PageMenu />
       </div>
     )
   }

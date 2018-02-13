@@ -1,20 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { withStyles } from 'material-ui/styles'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
-import Dashboard from 'material-ui-icons/Dashboard'
-import Assignment from 'material-ui-icons/Assignment'
-import AccouintBox from 'material-ui-icons/AccountBox'
 import { connect } from 'react-redux'
 import { indexAction, soundAction, userAction } from '../actions/selectAction'
-
-const styles = theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 300,
-    background: theme.palette.background.paper,
-  }
-})
 
 class Menu extends React.Component {
 
@@ -31,38 +17,41 @@ class Menu extends React.Component {
   }
 
   render () {
-    const { classes } = this.props
     return (
-      <List className={classes.root}>
-        <ListItem button onClick={this.handleIndexComponent.bind(this)}>
-          <ListItemIcon>
-            <Dashboard />
-          </ListItemIcon>
-          <ListItemText inset primary='หน้าหลัก' />
-        </ListItem>
-        <ListItem button onClick={this.handleSoundComponent.bind(this)}>
-          <ListItemIcon>
-            <Assignment />
-          </ListItemIcon>
-          <ListItemText inset primary='จัดการเสียง' />
-        </ListItem>
-        <ListItem button onClick={this.handleUserComponent.bind(this)}>
-          <ListItemIcon>
-            <AccouintBox />
-          </ListItemIcon>
-          <ListItemText inset primary='จัดการผู้ใช้' />
-        </ListItem>
-      </List>
+      <div>
+        <ul>
+        <li><a href="#" onClick={this.handleIndexComponent.bind(this)}>หน้าหลัก</a></li>
+        <li><a href="#" onClick={this.handleSoundComponent.bind(this)}>จัดการเสียง</a></li>
+        <li><a href="#" onClick={this.handleUserComponent.bind(this)}>จัดการผู้ใช้</a></li>
+        </ul>
+
+        <style jsx>{`
+          ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+          }
+          li a {
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-right: groove;
+            border-color: #d2dff4;
+          }
+          li a:hover {
+            background-color: #4db8ff;
+            color: white;
+          }
+        `}</style>
+      </div>
     )
   }
-}
-
-Menu.propTypes = {
-  classes: PropTypes.object.isRequired
 }
 
 const mapStateToProps = ({component}) => ({
   component: component
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(Menu))
+export default connect(mapStateToProps)(Menu)
