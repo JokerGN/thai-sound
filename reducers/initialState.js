@@ -2,5 +2,7 @@ export default {
   user: [],
   register: [],
   component: 'index',
-  userList: []
+  userList: [],
+  changeStatus: [],
+  soundList: []
 }

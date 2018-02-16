@@ -4,28 +4,23 @@ import { connect } from 'react-redux'
 import Menu from './Menu'
 import NavBar from './NavBar'
 import UserTable from './UserTable'
+import SoundTable from './SoundTable'
+import AddSoundForm from './AddSoundForm'
+import {insertAction} from '../actions/selectAction'
 import {Grid, Col, Row} from 'react-styled-flexboxgrid'
+import Link from 'next/link'
+import Cookie from 'js-cookie'
 
 class PageMenu extends React.Component {
 
-  state = {
-    open: true
-  }
-
-  handleToggleDrawer = () => (
-    this.setState({ open: !this.state.open })
-  )
-
-  handleLogout() {
-    this.props.dispatch(logoutAction())
-    Cookie.remove('username')
-    Router.push('/')
+  handleInsertSelect() {
+    this.props.dispatch(insertAction())
   }
 
   render () {
     const { classes} = this.props
-    const { open } = this.state
     const component = this.props.component
+    const role = Cookie.get('role')
 
     return (
     <Grid>
@@ -49,7 +44,22 @@ class PageMenu extends React.Component {
           } else if (component === 'sound') {
             return (
               <div>
-                <p>This is sound content</p>
+                {(() => {
+                  if (role === 'admin') {
+                    return (
+                      <div>
+                        <button onClick={this.handleInsertSelect.bind(this)}>เพิ่ม</button>
+                      </div>
+                    )
+                  }
+                })()}
+                <SoundTable />
+              </div>
+            )
+          } else if (component === 'insert'){
+            return (
+              <div>
+                <AddSoundForm />
               </div>
             )
           } else {

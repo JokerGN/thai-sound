@@ -1,4 +1,5 @@
 import React from 'react'
+import Cookie from 'js-cookie'
 import { connect } from 'react-redux'
 import { indexAction, soundAction, userAction } from '../actions/selectAction'
 
@@ -17,13 +18,27 @@ class Menu extends React.Component {
   }
 
   render () {
+    const role = Cookie.get('role')
     return (
       <div>
-        <ul>
-        <li><a href="#" onClick={this.handleIndexComponent.bind(this)}>หน้าหลัก</a></li>
-        <li><a href="#" onClick={this.handleSoundComponent.bind(this)}>จัดการเสียง</a></li>
-        <li><a href="#" onClick={this.handleUserComponent.bind(this)}>จัดการผู้ใช้</a></li>
-        </ul>
+        {(() => {
+          if (role === 'user') {
+            return (
+              <ul>
+                <li><a href="#" onClick={this.handleIndexComponent.bind(this)}>หน้าหลัก</a></li>
+                <li><a href="#" onClick={this.handleSoundComponent.bind(this)}>เสียง</a></li>
+              </ul>
+            )
+          } else {
+            return (
+              <ul>
+                <li><a href="#" onClick={this.handleIndexComponent.bind(this)}>หน้าหลัก</a></li>
+                <li><a href="#" onClick={this.handleSoundComponent.bind(this)}>จัดการเสียง</a></li>
+                <li><a href="#" onClick={this.handleUserComponent.bind(this)}>จัดการผู้ใช้</a></li>
+              </ul>
+            )
+          }
+        })()}
 
         <style jsx>{`
           ul {
