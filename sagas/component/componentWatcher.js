@@ -14,4 +14,8 @@ export default function* watchComponent() {
     let component = 'user'
     yield put({type: types.USER_SUCCESS, component})
   })
+  yield takeLatest(types.INSERT_REQUEST, function* insert() {
+    let component = 'insert'
+    yield put({type: types.INSERT_SUCCESS, component})
+  })
 }

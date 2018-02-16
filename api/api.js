@@ -33,3 +33,24 @@ export const getUserData = () => {
     return res.data
   })
 }
+
+export const changeStatusData = (payload) => {
+  return Axios({
+    method: 'POST',
+    url: `${serverUrl}/user/change_status`,
+    data: payload
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
+
+export const getSoundData = () => {
+  return Axios({
+    method: 'GET',
+    url: `${serverUrl}/sound/showall`
+  })
+  .then(function (res) {
+    return res.data
+  })
+}

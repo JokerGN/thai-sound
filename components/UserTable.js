@@ -1,11 +1,20 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getUserAction} from '../actions/getUserAction'
+import {getUserAction, changeStatusAction} from '../actions/getUserAction'
 import Moment from 'moment-timezone'
 
 class UserTable extends React.Component {
 
   componentDidMount() {
+    this.props.dispatch(getUserAction())
+  }
+
+  handleBlockButton(email) {
+    let payload = {
+      email: email
+    }
+    console.log(email)
+    this.props.dispatch(changeStatusAction(payload))
     this.props.dispatch(getUserAction())
   }
 
@@ -17,6 +26,7 @@ class UserTable extends React.Component {
           <thead>
             <tr>
               <th>#</th>
+              <th>บล็อค</th>
               <th>แก้ไข</th>
               <th>ลบ</th>
               <th>ชื่อ - นามสกุล</th>
@@ -34,6 +44,7 @@ class UserTable extends React.Component {
                     return (
                       <tr key={index}>
                         <td>{index + 1}</td>
+                        <td><button className="block" onClick={this.handleBlockButton.bind(this, n.email)}>บล็อค</button></td>
                         <td><button className="update">แก้ไข</button></td>
                         <td><button className="delete">ลบ</button></td>
                         <td>{n.firstName + ' ' + n.lastName}</td>
@@ -71,6 +82,13 @@ class UserTable extends React.Component {
             background-color: #ff5050;
           }
           .delete:hover {
+            background-color: white;
+            cursor: pointer;
+          }
+          .block {
+            background-color: #ed1212;
+          }
+          .block:hover {
             background-color: white;
             cursor: pointer;
           }

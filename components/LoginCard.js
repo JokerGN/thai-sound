@@ -15,6 +15,7 @@ import Link from 'next/link'
 import Router from 'next/router'
 import Cookie from 'js-cookie'
 import { loginAction } from '../actions/loginAction'
+import { indexAction } from '../actions/selectAction'
 import { connect } from 'react-redux'
 
 
@@ -60,6 +61,7 @@ class LoginCard extends React.Component {
     } else {
       Router.push('/dashboard')
       Cookie.set('username',nextProps.user.name)
+      Cookie.set('role',nextProps.user.role)
     }
   }
 
@@ -82,6 +84,7 @@ class LoginCard extends React.Component {
       password: this.state.password
     }
     this.props.dispatch(loginAction(payload))
+    this.props.dispatch(indexAction())
     this.clearInput()
   }
 

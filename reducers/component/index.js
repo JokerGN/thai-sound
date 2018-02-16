@@ -9,6 +9,8 @@ export default function (state = initialState.component, action) {
       return state = action.component
     case types.USER_SUCCESS:
       return state = action.component
+    case types.INSERT_SUCCESS:
+      return state = action.component
     default:
       return state
   }

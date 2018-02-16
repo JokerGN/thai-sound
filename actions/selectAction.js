@@ -11,3 +11,7 @@ export const soundAction = () => ({
 export const userAction = () => ({
   type: types.USER_REQUEST
 })
+
+export const insertAction = () => ({
+  type: types.INSERT_REQUEST
+})
