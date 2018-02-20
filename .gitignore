@@ -37,6 +37,7 @@ node_modules/
 jspm_packages/
 .next/
 out/
+.vscode/
 
 # Typescript v1 declaration files
 typings/
