@@ -28,7 +28,7 @@ class NavBar extends React.Component {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: #4db8ff;
+            background-color: #67a806;
             width: 100%;
             box-shadow: 1px 1px 1px grey;
           }
@@ -44,7 +44,7 @@ class NavBar extends React.Component {
           }
           li a:hover {
             background-color: white;
-            color: #4db8ff;
+            color: #67a806;
           }
           .right {
             float: right;

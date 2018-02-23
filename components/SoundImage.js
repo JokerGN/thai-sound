@@ -1,6 +1,9 @@
 import React from 'react'
 import {Col, Row} from 'react-styled-flexboxgrid'
 import ReactHowler from 'react-howler'
+import ContentPanel from '../components/ContentPanel'
+import IndexBar from './IndexBar'
+import { connect } from 'react-redux'
 
 class SoundImage extends React.Component {
 
@@ -14,6 +17,7 @@ class SoundImage extends React.Component {
   }
 
   render () {
+    let page = this.props.page
     return (
       <Row>
         <ReactHowler
@@ -24,7 +28,17 @@ class SoundImage extends React.Component {
         />
         <Col md={12}>
           <div className="bg">
-            <p>THAI-SOUND</p>
+            {(() => {
+                  if (page === 'main') {
+                    return (
+                      <p>THAI-SOUND</p>
+                    )
+                  } else {
+                    return (
+                      <ContentPanel />
+                    )
+                  }
+            })()}
           </div>
         </Col>
         <style jsx>{`
@@ -61,5 +75,9 @@ class SoundImage extends React.Component {
   }
 }
 
+const mapStateToProps = ({page}) => ({
+  page: page
+})
 
-export default SoundImage
+
+export default connect(mapStateToProps)(SoundImage)

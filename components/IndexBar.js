@@ -1,8 +1,18 @@
 import React from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
+import { mainAction, infoAction } from '../actions/selectAction'
+import { connect } from 'react-redux'
 
 class IndexBar extends React.Component {
+
+  handleMainPage() {
+    this.props.dispatch(mainAction())
+  }
+
+  handleInfoPage() {
+    this.props.dispatch(infoAction())
+  }
 
   render () {
 
@@ -11,14 +21,15 @@ class IndexBar extends React.Component {
         <ul>
           <li><p>Thai-sound</p></li>
           <li className="right">
-          <Link href="/info">
-            <a>เกี่ยวกับเรา</a>
-          </Link>
-        </li>
+            <a href="#" onClick={this.handleInfoPage.bind(this)}>เกี่ยวกับเรา</a>
+          </li>
           <li className="right">
             <Link href="/login">
               <a>คลังเสียง</a>
             </Link>
+          </li>
+          <li className="right">
+            <a href="#" onClick={this.handleMainPage.bind(this)}>หน้าหลัก</a>
           </li>
         </ul>
 
@@ -44,7 +55,7 @@ class IndexBar extends React.Component {
           }
           li a:hover {
             background-color: white;
-            color: #4db8ff;
+            color: #67a806;
           }
           .right {
             float: right;
@@ -66,4 +77,8 @@ class IndexBar extends React.Component {
   }
 }
 
-export default IndexBar
+const mapStateToProps = ({page}) => ({
+  page: page
+})
+
+export default connect(mapStateToProps)(IndexBar)

@@ -56,7 +56,7 @@ class Menu extends React.Component {
             border-color: #d2dff4;
           }
           li a:hover {
-            background-color: #4db8ff;
+            background-color: #67a806;
             color: white;
           }
         `}</style>
