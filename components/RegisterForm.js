@@ -118,7 +118,7 @@ class RegisterForm extends React.Component {
 
   handleCloseSuccessDialog() {
     this.setState({ openSuccessDialog: false })
-    Router.push('/')
+    Router.push('/login')
   }
 
   handleRegister() {

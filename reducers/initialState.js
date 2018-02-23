@@ -4,5 +4,6 @@ export default {
   component: 'index',
   userList: [],
   changeStatus: [],
-  soundList: []
+  soundList: [],
+  page: 'main'
 }

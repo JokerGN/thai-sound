@@ -19,7 +19,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     if (!(Cookie.get('username'))) {
-      Router.push('/')
+      Router.push('/login')
     }
   }
 

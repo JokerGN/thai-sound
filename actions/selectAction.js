@@ -15,3 +15,11 @@ export const userAction = () => ({
 export const insertAction = () => ({
   type: types.INSERT_REQUEST
 })
+
+export const mainAction = () => ({
+  type: types.MAIN_REQUEST
+})
+
+export const infoAction = () => ({
+  type: types.INFO_REQUEST
+})
