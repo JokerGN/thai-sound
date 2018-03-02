@@ -7,11 +7,11 @@ import { connect } from 'react-redux'
 class IndexBar extends React.Component {
 
   handleMainPage() {
-    this.props.dispatch(mainAction())
+    this.props.dispatch(selectMainAction())
   }
 
   handleInfoPage() {
-    this.props.dispatch(infoAction())
+    this.props.dispatch(selectInfoAction())
   }
 
   render () {
