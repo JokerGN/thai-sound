@@ -6,7 +6,7 @@ import NavBar from './NavBar'
 import UserTable from './UserTable'
 import SoundTable from './SoundTable'
 import AddSoundForm from './AddSoundForm'
-import {insertAction} from '../actions/selectAction'
+import {selectInsertAction} from '../actions/selectAction'
 import {Grid, Col, Row} from 'react-styled-flexboxgrid'
 import Link from 'next/link'
 import Cookie from 'js-cookie'
@@ -14,7 +14,7 @@ import Cookie from 'js-cookie'
 class PageMenu extends React.Component {
 
   handleInsertSelect() {
-    this.props.dispatch(insertAction())
+    this.props.dispatch(selectInsertAction())
   }
 
   render () {

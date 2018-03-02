@@ -6,6 +6,7 @@ import watchComponent from './component/componentWatcher'
 import watchChangeStatus from './user/changeStatusWatcher'
 import watchShowSound from './sound/showSoundWatcher'
 import watchAddSound from './sound/addSoundWatcher'
+import watchDeleteSound from './sound/deleteSoundWatcher'
 import watchGetSound from './sound/getSoundByIdWatcher'
 import watchPage from './component/pageWatcher'
 import watchType from './type/typeWatcher'
@@ -19,6 +20,7 @@ export default function* saga() {
   yield fork(watchChangeStatus)
   yield fork(watchShowSound)
   yield fork(watchAddSound)
+  yield fork(watchDeleteSound)
   yield fork(watchGetSound)
   yield fork(watchPage)
   yield fork(watchType)

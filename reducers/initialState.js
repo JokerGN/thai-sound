@@ -9,4 +9,5 @@ export default {
   type: [],
   feeling: [],
   add_sound: 0,
+  delete_sound: 0,
 }

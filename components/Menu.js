@@ -1,20 +1,20 @@
 import React from 'react'
 import Cookie from 'js-cookie'
 import { connect } from 'react-redux'
-import { indexAction, soundAction, userAction } from '../actions/selectAction'
+import { selectIndexAction, selectSoundAction, selectUserAction } from '../actions/selectAction'
 
 class Menu extends React.Component {
 
   handleIndexComponent() {
-    this.props.dispatch(indexAction())
+    this.props.dispatch(selectIndexAction())
   }
 
   handleSoundComponent() {
-    this.props.dispatch(soundAction())
+    this.props.dispatch(selectSoundAction())
   }
 
   handleUserComponent() {
-    this.props.dispatch(userAction())
+    this.props.dispatch(selectUserAction())
   }
 
   render () {

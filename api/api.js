@@ -48,7 +48,7 @@ export const changeStatusData = (payload) => {
 export const getSoundData = () => {
   return Axios({
     method: 'GET',
-    url: `${serverUrl}/sound/showall`
+    url: `http://localhost:3001/sound/showall`
   })
   .then(function (res) {
     return res.data
@@ -84,6 +84,17 @@ export const addSoundData = (payload) => {
     headers: {
       'Content-Type': undefined
     }
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
+
+export const deleteSoundData = (payload) => {
+  return Axios({
+    method: 'POST',
+    url: `${serverUrl}/sound/delete_sound`,
+    data: payload
   })
   .then(function (res) {
     return res.data

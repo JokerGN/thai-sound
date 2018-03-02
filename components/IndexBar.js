@@ -1,7 +1,7 @@
 import React from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
-import { mainAction, infoAction } from '../actions/selectAction'
+import { selectMainAction, selectInfoAction } from '../actions/selectAction'
 import { connect } from 'react-redux'
 
 class IndexBar extends React.Component {

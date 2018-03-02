@@ -1,23 +1,82 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getSoundAction} from '../actions/getSoundAction'
+import { deleteSoundAction, clearDeleteSoundData } from '../actions/soundAction'
 import SoundPlayer from './SoundPlayer'
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from 'material-ui/Dialog'
+import Button from 'material-ui/Button'
 import Cookie from 'js-cookie'
 const serverUrl = 'http://thai-sound-api.chaluline.com'
 const devServerUrl = 'http://localhost:3001'
 
 class SoundTable extends React.Component {
 
+  state = {
+    open: false,
+    payload: {}
+  }
+
   componentDidMount() {
     this.props.dispatch(getSoundAction())
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
+    if (nextProps.delete_sound) {
+      if (nextProps.delete_sound.data.status == 200) {
+        this.props.dispatch(clearDeleteSoundData())
+        this.props.dispatch(getSoundAction())
+      }
+    }
+  }
+
+  handleDeleteButton(soundId) {
+    this.setState({payload: {soundId: soundId}})
+    this.handleOpenDialog()
+  }
+
+  handleOpenDialog() {
+    this.setState({open: true})
+  }
+
+  handleYesButton() {
+    this.setState({open: false})
+    this.props.dispatch(deleteSoundAction(this.state.payload))
+  }
+
+  handleNoButton() {
+    this.setState({open: false})
   }
 
   render() {
     const soundList = this.props.soundList
     const role = Cookie.get('role')
-    console.log(soundList)
     return (
       <div>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleNoButton}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>ยืนยันการลบเสียง</DialogTitle>
+          <DialogContent>
+            คุณต้องการลบเสียงนี้หรือไม่
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleYesButton.bind(this)} color='primary'>
+              ตกลง
+            </Button>
+            <Button onClick={this.handleNoButton.bind(this)} color='primary'>
+              ยกเลิก
+            </Button>
+          </DialogActions>
+        </Dialog>
         <table>
           <thead className='tablehead'>
             <tr>
@@ -26,10 +85,10 @@ class SoundTable extends React.Component {
               <th>ที่มา</th>
               <th>ประเภทเสียง</th>
               <th>ลักษณะอารมณ์ความรู้สึก</th>
-              <th colspan={2}>เพศชาย</th>
-              <th colspan={2}>เพศหญิง</th>
-              <th colspan={2}>อายุ 18-35 ปี</th>
-              <th colspan={2}>อายุ 36-60 ปี</th>
+              <th colSpan={2}>เพศชาย</th>
+              <th colSpan={2}>เพศหญิง</th>
+              <th colSpan={2}>อายุ 18-35 ปี</th>
+              <th colSpan={2}>อายุ 36-60 ปี</th>
               <th></th>
             </tr>
             <tr>
@@ -74,7 +133,7 @@ class SoundTable extends React.Component {
                             return (
                               <td>
                                 <button>แก้ไข</button>
-                                <button>ลบ</button>
+                                <button onClick={this.handleDeleteButton.bind(this, n.soundId)}>ลบ</button>
                               </td>
                              )
                           } else {
@@ -130,8 +189,9 @@ class SoundTable extends React.Component {
   }
 }
 
-const mapStateToProps = ({get_sound}) => ({
-  soundList: get_sound.data
+const mapStateToProps = ({get_sound, delete_sound}) => ({
+  soundList: get_sound.data,
+  delete_sound: delete_sound
 })
 
 export default connect(mapStateToProps)(SoundTable)

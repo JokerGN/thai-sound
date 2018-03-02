@@ -1,6 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { withStyles } from 'material-ui/styles'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 import TextField from 'material-ui/TextField'
@@ -11,8 +9,6 @@ import Dialog, {
   DialogContentText,
   DialogTitle
 } from 'material-ui/Dialog'
-import Link from 'next/link'
-import Router from 'next/router'
 import Cookie from 'js-cookie'
 import FormData from 'form-data'
 import { connect } from 'react-redux'
@@ -20,36 +16,8 @@ import { registerAction } from '../actions/registerAction'
 import { soundAction } from '../actions/selectAction'
 import { getFeelingAction } from '../actions/getFeelingAction'
 import { getTypeAction } from '../actions/getTypeAction'
-import { addSoundAction } from '../actions/soundAction'
-
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    paddingTop: 16,
-    paddingBottom: 16,
-    'justify-content': 'center',
-    'align-items': 'center',
-    width: 1000,
-    marginTop: 10,
-    flexWrap: 'wrap'
-  },
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap'
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 300
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
-  link: {
-    'text-decoration': 'none'
-  }
-})
+import { addSoundAction, clearAddSoundData } from '../actions/soundAction'
+import { selectSoundAction } from '../actions/selectAction'
 
 class AddSoundForm extends React.Component {
 
@@ -58,7 +26,6 @@ class AddSoundForm extends React.Component {
     typeId: 1,
     sourceId: 1,
     feelingId: 1,
-    maleFeeling: 1,
     maleMean: '',
     maleSD: '',
     femaleMean: '',
@@ -68,7 +35,8 @@ class AddSoundForm extends React.Component {
     oldmanMean: '',
     oldmaneSD: '',
     error: '',
-    open: false,
+    openError: false,
+    openSuccess: false
   }
 
   componentWillMount() {
@@ -79,11 +47,13 @@ class AddSoundForm extends React.Component {
   componentWillReceiveProps(nextProps) {
     console.log(nextProps)
     if (nextProps.add_sound) {
-      if (nextProps.add_sound.status != 200) {
+      if (nextProps.add_sound.data.status == 200) {
+        this.handleOpenSuccessDialog()
+      } else if (nextProps.add_sound.data.status == 403) {
         this.setState({error: "มีไฟล์นี้ระบบแล้ว ไม่สามารถเพิ่มไฟล์ได้"})
-        this.handleOpenDialog()
-      } else if (nextProps.add_sound.status == 403) {
-        console.log("Add sound success")
+        this.handleOpenErrorDialog()
+      } else {
+        this.setState({error: "เกิดข้อผิดพลาดในระบบ กรุณาติดต่อผู้ดูแล"})
       }
     }
   }
@@ -138,28 +108,71 @@ class AddSoundForm extends React.Component {
   }
 
   handleSubmitButton() {
-    let payload = new FormData()
-    payload.set('sound', this.state.sound, this.state.sound.name)
-    payload.set('typeId', this.state.typeId)
-    payload.set('sourceId', this.state.sourceId)
-    payload.set('feelingId', this.state.feelingId)
-    payload.set('maleMean', this.state.maleMean)
-    payload.set('maleSD', this.state.maleSD)
-    payload.set('femaleMean', this.state.femaleMean)
-    payload.set('femaleSD', this.state.femaleSD)
-    payload.set('teenageMean', this.state.teenageMean)
-    payload.set('teenageSD', this.state.teenageSD)
-    payload.set('oldmanMean', this.state.oldmanMean)
-    payload.set('oldmanSD', this.state.oldmanSD)
-    this.props.dispatch(addSoundAction(payload))
+    if (this.state.sound == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.maleMean == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.maleSD == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.femaleMean == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.femaleSD == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.teenageMean == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.teenageSD == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.oldmanMean == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.oldSD == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else {
+      let payload = new FormData()
+      payload.set('sound', this.state.sound, this.state.sound.name)
+      payload.set('typeId', this.state.typeId)
+      payload.set('sourceId', this.state.sourceId)
+      payload.set('feelingId', this.state.feelingId)
+      payload.set('maleMean', this.state.maleMean)
+      payload.set('maleSD', this.state.maleSD)
+      payload.set('femaleMean', this.state.femaleMean)
+      payload.set('femaleSD', this.state.femaleSD)
+      payload.set('teenageMean', this.state.teenageMean)
+      payload.set('teenageSD', this.state.teenageSD)
+      payload.set('oldmanMean', this.state.oldmanMean)
+      payload.set('oldmanSD', this.state.oldmanSD)
+      this.props.dispatch(addSoundAction(payload))
+    }
   }
 
-  handleOpenDialog() {
-    this.setState({open: true})
+  handleOpenErrorDialog() {
+    this.setState({openError: true})
   }
 
-  handleCloseDialog() {
-    this.setState({open: false})
+  handleCloseErrorDialog() {
+    this.setState({openError: false})
+  }
+
+  handleOpenSuccessDialog() {
+    this.setState({openSuccess: true})
+  }
+
+  handleCloseSuccessDialog() {
+    this.setState({openSuccess: false})
+    this.props.dispatch(clearAddSoundData())
+    this.props.dispatch(selectSoundAction())
+  }
+
+  handleCancleButton() {
+    this.props.dispatch(selectSoundAction())
   }
 
   render () {
@@ -171,8 +184,8 @@ class AddSoundForm extends React.Component {
     return (
       <div>
         <Dialog
-          open={this.state.open}
-          onClose={this.handleCloseDialog}
+          open={this.state.openError}
+          onClose={this.handleCloseErrorDialog}
           aria-labelledby='alert-dialog-title'
           aria-describedby='alert-dialog-description'
         >
@@ -181,7 +194,23 @@ class AddSoundForm extends React.Component {
             {this.state.error}
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleCloseDialog.bind(this)} color='primary'>
+            <Button onClick={this.handleCloseErrorDialog.bind(this)} color='primary'>
+              ตกลง
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.state.openSuccess}
+          onClose={this.handleCloseSuccessDialog}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>เพิ่มเสียงสำเร็จ</DialogTitle>
+          <DialogContent>
+            เพิ่มเสียงสำเร็จ กลับสู่หน้าหลัก
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseSuccessDialog.bind(this)} color='primary'>
               ตกลง
             </Button>
           </DialogActions>
@@ -239,7 +268,10 @@ class AddSoundForm extends React.Component {
             ค่าเฉลี่ย : <input type='text' onChange={this.handleOldmanMean.bind(this)} />&nbsp;&nbsp;&nbsp;
             ส่วนเบี่ยงเบนมาตรฐาน : <input type='text' onChange={this.handleOldmanSD.bind(this)} />
             <br /><br />
-            <center><button onClick={this.handleSubmitButton.bind(this)}>เพิ่มเสียง</button><button>ยกเลิก</button></center>
+            <center>
+              <button onClick={this.handleSubmitButton.bind(this)}>เพิ่มเสียง</button>
+              <button onClick={this.handleCancleButton.bind(this)}>ยกเลิก</button>
+            </center>
           </form>
         </div>
         <style jsx>{`
@@ -261,14 +293,10 @@ class AddSoundForm extends React.Component {
   }
 }
 
-AddSoundForm.propTypes = {
-  classes: PropTypes.object.isRequired,
-}
-
 const mapStateToProps = ({type, feeling, add_sound}) => ({
   type: type.data,
   feeling: feeling.data,
   add_sound: add_sound
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(AddSoundForm))
+export default connect(mapStateToProps)(AddSoundForm)
