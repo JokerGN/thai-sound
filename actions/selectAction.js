@@ -23,3 +23,11 @@ export const selectMainAction = () => ({
 export const selectInfoAction = () => ({
   type: types.INFO_REQUEST
 })
+
+export const selectLoginAction = () => ({
+  type: types.LOGIN_PAGE_REQUEST
+})
+
+export const selectRegisterAction = () => ({
+  type: types.REGISTER_PAGE_REQUEST
+})

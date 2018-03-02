@@ -3,6 +3,8 @@ import {Col, Row} from 'react-styled-flexboxgrid'
 import ReactHowler from 'react-howler'
 import ContentPanel from '../components/ContentPanel'
 import IndexBar from './IndexBar'
+import RegisterForm from './RegisterForm'
+import LoginCard from './LoginCard'
 import { connect } from 'react-redux'
 
 class SoundImage extends React.Component {
@@ -33,9 +35,17 @@ class SoundImage extends React.Component {
                     return (
                       <p>THAI-SOUND</p>
                     )
-                  } else {
+                  } else if (page === 'info') {
                     return (
                       <ContentPanel />
+                    )
+                  } else if (page === 'login') {
+                    return (
+                      <LoginCard />
+                    )
+                  } else if (page === 'register') {
+                    return (
+                      <RegisterForm />
                     )
                   }
             })()}
@@ -62,6 +72,7 @@ class SoundImage extends React.Component {
             position: absolute;
             top: 0;
             left: 0;
+            margin-top: 50px;
             opacity: 0.7;
             z-index: -1;
           }
