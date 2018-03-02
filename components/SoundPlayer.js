@@ -70,7 +70,6 @@ class SoundPlayer extends React.Component {
           onEnd={this.handleOnEnd.bind(this)}
           onPlay={this.handleOnPlay.bind(this)}
         />
-        <p>{(this.state.seek !== undefined) ? this.state.seek.toFixed(2) : '0.00'}/{this.state.duration.toFixed(2)}</p>
         <button onClick={this.handlePlayButton.bind(this)}>{(!this.state.playing) ? 'play': 'pause'}</button>
         <button onClick={this.handleStopButton.bind(this)}>stop</button>
         <style jsx>{`

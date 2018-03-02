@@ -5,7 +5,10 @@ import component from './component'
 import get_user from './get_user'
 import change_status from './change_status'
 import get_sound from './sound'
+import add_sound from './add_sound'
 import page from './page'
+import type from './get_type'
+import feeling from './get_feeling'
 
 const rootReducer = combineReducers ({
   user,
@@ -14,7 +17,10 @@ const rootReducer = combineReducers ({
   get_user,
   change_status,
   get_sound,
-  page
+  add_sound,
+  page,
+  type,
+  feeling
 })
 
 export default rootReducer

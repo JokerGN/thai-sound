@@ -4,6 +4,7 @@ import {getSoundAction} from '../actions/getSoundAction'
 import SoundPlayer from './SoundPlayer'
 import Cookie from 'js-cookie'
 const serverUrl = 'http://thai-sound-api.chaluline.com'
+const devServerUrl = 'http://localhost:3001'
 
 class SoundTable extends React.Component {
 
@@ -14,16 +15,35 @@ class SoundTable extends React.Component {
   render() {
     const soundList = this.props.soundList
     const role = Cookie.get('role')
+    console.log(soundList)
     return (
       <div>
         <table>
-          <thead>
+          <thead className='tablehead'>
             <tr>
               <th>#</th>
               <th>เสียง</th>
               <th>ที่มา</th>
               <th>ประเภทเสียง</th>
               <th>ลักษณะอารมณ์ความรู้สึก</th>
+              <th colspan={2}>เพศชาย</th>
+              <th colspan={2}>เพศหญิง</th>
+              <th colspan={2}>อายุ 18-35 ปี</th>
+              <th colspan={2}>อายุ 36-60 ปี</th>
+              <th></th>
+            </tr>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>Mean</th>
+              <th>SD</th>
+              <th>Mean</th>
+              <th>SD</th>
+              <th>Mean</th>
+              <th>SD</th>
               <th>Mean</th>
               <th>SD</th>
               <th></th>
@@ -39,10 +59,16 @@ class SoundTable extends React.Component {
                         <td>{index+1}</td>
                         <td><SoundPlayer soundUrl={serverUrl+'/sound/'+n.soundUrl}/></td>
                         <td>{n.sourceId}</td>
-                        <td>{n.typeId}</td>
-                        <td></td>
-                        <td>{n.mean}</td>
-                        <td>{n.sd}</td>
+                        <td>{n.type.typeName}</td>
+                        <td>{n.feeling.feelingName}</td>
+                        <td>{n.maleMean}</td>
+                        <td>{n.maleSD}</td>
+                        <td>{n.femaleMean}</td>
+                        <td>{n.femaleSD}</td>
+                        <td>{n.teenageMean}</td>
+                        <td>{n.teenageSD}</td>
+                        <td>{n.oldmanMean}</td>
+                        <td>{n.oldmanSD}</td>
                         {(()=> {
                           if (role === 'admin') {
                             return (
@@ -69,8 +95,9 @@ class SoundTable extends React.Component {
           table {
             width: 100%;
             text-align: center;
-            overflow-x: "auto";
-          },
+            overflow-x: auto;
+            background-color: white;
+          }
           button {
             font-family: Kanit;
             -webkit-transition-duration: 0.4s; /* Safari */

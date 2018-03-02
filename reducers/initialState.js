@@ -5,5 +5,8 @@ export default {
   userList: [],
   changeStatus: [],
   soundList: [],
-  page: 'main'
+  page: 'main',
+  type: [],
+  feeling: [],
+  add_sound: 0,
 }
