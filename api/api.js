@@ -54,3 +54,49 @@ export const getSoundData = () => {
     return res.data
   })
 }
+
+export const getTypeData = () => {
+  return Axios({
+    method: 'GET',
+    url: `${serverUrl}/type/get_type`
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
+
+export const getFeelingData = (payload) => {
+  return Axios({
+    method: 'POST',
+    url: `${serverUrl}/feeling/get_feeling`,
+    data: payload
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
+
+export const addSoundData = (payload) => {
+  return Axios({
+    method: 'POST',
+    url: `${serverUrl}/sound/add_sound`,
+    data: payload,
+    headers: {
+      'Content-Type': undefined
+    }
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
+
+export const getSoundById = (payload) => {
+  return Axios({
+    method: 'POST',
+    url: `${serverUrl}/sound/get_sound_id`,
+    data: payload
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
