@@ -48,7 +48,7 @@ export const changeStatusData = (payload) => {
 export const getSoundData = () => {
   return Axios({
     method: 'GET',
-    url: `http://localhost:3001/sound/showall`
+    url: `${serverUrl}/sound/showall`
   })
   .then(function (res) {
     return res.data
