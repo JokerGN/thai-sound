@@ -55,6 +55,17 @@ export const getSoundData = () => {
   })
 }
 
+export const searchSoundData = (payload) => {
+  return Axios({
+    method: 'POST',
+    url: `${serverUrl}/sound/search_sound`,
+    data: payload
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
+
 export const getTypeData = () => {
   return Axios({
     method: 'GET',

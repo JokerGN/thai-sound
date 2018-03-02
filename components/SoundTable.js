@@ -1,7 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getSoundAction} from '../actions/getSoundAction'
-import { deleteSoundAction, clearDeleteSoundData } from '../actions/soundAction'
+import { deleteSoundAction, clearDeleteSoundData, searchSoundAction} from '../actions/soundAction'
+import { getFeelingAction } from '../actions/getFeelingAction'
+import { getTypeAction } from '../actions/getTypeAction'
 import SoundPlayer from './SoundPlayer'
 import Dialog, {
   DialogActions,
@@ -18,11 +20,16 @@ class SoundTable extends React.Component {
 
   state = {
     open: false,
-    payload: {}
+    payload: {},
+    typeId: 1,
+    feelingId: 1,
+    search: false
   }
 
   componentDidMount() {
     this.props.dispatch(getSoundAction())
+    this.props.dispatch(getTypeAction())
+    this.props.dispatch(getFeelingAction({typeId: 1}))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,8 +60,33 @@ class SoundTable extends React.Component {
     this.setState({open: false})
   }
 
+  handleFeelingChange(e) {
+    this.setState({feelingId: e.target.value})
+  }
+
+  handleTypeChange(e) {
+    this.setState({typeId: e.target.value})
+    this.props.dispatch(getFeelingAction({typeId: e.target.value}))
+  }
+
+  handleSearchButton() {
+    this.setState({search: true})
+    let payload = {
+      typeId: this.state.typeId,
+      feelingId: this.state.feelingId
+    }
+    this.props.dispatch(searchSoundAction(payload))
+  }
+
   render() {
-    const soundList = this.props.soundList
+    let soundList = null
+    if (this.state.search) {
+      soundList = this.props.search_sound
+    } else {
+      soundList = this.props.soundList
+    }
+    const feeling = this.props.feeling
+    const type = this.props.type
     const role = Cookie.get('role')
     return (
       <div>
@@ -77,6 +109,35 @@ class SoundTable extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+        <div>
+        ประเภทเสียง : <select onChange={this.handleTypeChange.bind(this)} >
+            {(() => {
+              if (type) {
+                return (
+                  type.rows.map((n, index) => {
+                    return (
+                      <option key={index} value={n.typeId}>{n.typeName}</option>
+                    )
+                  })
+                )
+              }
+            })()}
+            </select>&nbsp;&nbsp;&nbsp;
+        ลักษณะความรู้สึก : <select onChange={this.handleFeelingChange.bind(this)}>
+            {(() => {
+              if (feeling) {
+                return (
+                  feeling.map((n, index) => {
+                    return (
+                      <option key={index} value={n.feelingId}>{n.feelingName}</option>
+                    )
+                  })
+                )
+              }
+            })()}
+            </select>&nbsp;&nbsp;&nbsp;
+            <button onClick={this.handleSearchButton.bind(this)}>ค้นหา</button>
+        </div>
         <table>
           <thead className='tablehead'>
             <tr>
@@ -189,9 +250,12 @@ class SoundTable extends React.Component {
   }
 }
 
-const mapStateToProps = ({get_sound, delete_sound}) => ({
+const mapStateToProps = ({get_sound, delete_sound, type, feeling, search_sound}) => ({
   soundList: get_sound.data,
-  delete_sound: delete_sound
+  search_sound: search_sound.data,
+  delete_sound: delete_sound,
+  type: type.data,
+  feeling: feeling.data,
 })
 
 export default connect(mapStateToProps)(SoundTable)

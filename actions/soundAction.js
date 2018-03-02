@@ -17,3 +17,8 @@ export const deleteSoundAction = (payload) => ({
 export const clearDeleteSoundData = () => ({
   type: types.CLEAR_DELETE_SOUND_DATA_REQUEST
 })
+
+export const searchSoundAction = (payload) => ({
+  type: types.SEARCH_SOUND_REQUEST,
+  payload: payload
+})
