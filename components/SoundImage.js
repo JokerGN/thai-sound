@@ -7,12 +7,14 @@ import RegisterForm from './RegisterForm'
 import LoginCard from './LoginCard'
 import { connect } from 'react-redux'
 
+const serverUrl = 'http://thai-sound-api.chaluline.com'
+
 class SoundImage extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      playing: false,
+      playing: true,
       volume: 0.5,
       loop: true
     }
@@ -23,7 +25,7 @@ class SoundImage extends React.Component {
     return (
       <Row>
         <ReactHowler
-          src="http://localhost:3001/sound/uploads/waterfall.mp3"
+          src={`${serverUrl}/sound/uploads/waterfall.mp3`}
           playing={this.state.playing}
           loop={this.state.loop}
           volume={this.state.volume}
