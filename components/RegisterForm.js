@@ -16,6 +16,7 @@ import Router from 'next/router'
 import Cookie from 'js-cookie'
 import { connect } from 'react-redux'
 import { registerAction } from '../actions/registerAction'
+import { selectMainAction } from '../actions/selectAction'
 
 
 const styles = theme => ({
@@ -118,7 +119,7 @@ class RegisterForm extends React.Component {
 
   handleCloseSuccessDialog() {
     this.setState({ openSuccessDialog: false })
-    Router.push('/login')
+    this.props.dispatch(selectMainAction())
   }
 
   handleRegister() {

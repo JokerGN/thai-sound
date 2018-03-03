@@ -11,7 +11,6 @@ import Dialog, {
   DialogContentText,
   DialogTitle
 } from 'material-ui/Dialog'
-import Link from 'next/link'
 import Router from 'next/router'
 import Cookie from 'js-cookie'
 import { loginAction } from '../actions/loginAction'
@@ -144,11 +143,6 @@ class LoginCard extends React.Component {
               value={this.state.password}
               onChange={this.handlePasswordChange.bind(this)}
             />
-            <Typography type='body1' conponet='h2'>
-              <Link href="/register">
-                <a className={classes.link}>สมัครสมาชิก</a>
-              </Link>
-            </Typography>
             <Button raised color='primary' className={classes.button} onClick={this.handleLogin.bind(this)}>เข้าสู่ระบบ</Button>
           </form>
         </Paper></center>

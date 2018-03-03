@@ -1,23 +1,143 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getSoundAction} from '../actions/getSoundAction'
+import { deleteSoundAction, clearDeleteSoundData, searchSoundAction} from '../actions/soundAction'
+import { getFeelingAction } from '../actions/getFeelingAction'
+import { getTypeAction } from '../actions/getTypeAction'
 import SoundPlayer from './SoundPlayer'
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from 'material-ui/Dialog'
+import Button from 'material-ui/Button'
 import Cookie from 'js-cookie'
 const serverUrl = 'http://thai-sound-api.chaluline.com'
 const devServerUrl = 'http://localhost:3001'
 
 class SoundTable extends React.Component {
 
+  state = {
+    open: false,
+    payload: {},
+    typeId: 1,
+    feelingId: 1,
+    search: false
+  }
+
   componentDidMount() {
     this.props.dispatch(getSoundAction())
+    this.props.dispatch(getTypeAction())
+    this.props.dispatch(getFeelingAction({typeId: 1}))
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
+    if (nextProps.delete_sound) {
+      if (nextProps.delete_sound.data.status == 200) {
+        this.props.dispatch(clearDeleteSoundData())
+        this.props.dispatch(getSoundAction())
+      }
+    }
+  }
+
+  handleDeleteButton(soundId) {
+    this.setState({payload: {soundId: soundId}})
+    this.handleOpenDialog()
+  }
+
+  handleOpenDialog() {
+    this.setState({open: true})
+  }
+
+  handleYesButton() {
+    this.setState({open: false})
+    this.props.dispatch(deleteSoundAction(this.state.payload))
+  }
+
+  handleNoButton() {
+    this.setState({open: false})
+  }
+
+  handleFeelingChange(e) {
+    this.setState({feelingId: e.target.value})
+  }
+
+  handleTypeChange(e) {
+    this.setState({typeId: e.target.value})
+    this.props.dispatch(getFeelingAction({typeId: e.target.value}))
+  }
+
+  handleSearchButton() {
+    this.setState({search: true})
+    let payload = {
+      typeId: this.state.typeId,
+      feelingId: this.state.feelingId
+    }
+    this.props.dispatch(searchSoundAction(payload))
   }
 
   render() {
-    const soundList = this.props.soundList
+    let soundList = null
+    if (this.state.search) {
+      soundList = this.props.search_sound
+    } else {
+      soundList = this.props.soundList
+    }
+    const feeling = this.props.feeling
+    const type = this.props.type
     const role = Cookie.get('role')
-    console.log(soundList)
     return (
       <div>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleNoButton}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>ยืนยันการลบเสียง</DialogTitle>
+          <DialogContent>
+            คุณต้องการลบเสียงนี้หรือไม่
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleYesButton.bind(this)} color='primary'>
+              ตกลง
+            </Button>
+            <Button onClick={this.handleNoButton.bind(this)} color='primary'>
+              ยกเลิก
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <div>
+        ประเภทเสียง : <select onChange={this.handleTypeChange.bind(this)} >
+            {(() => {
+              if (type) {
+                return (
+                  type.rows.map((n, index) => {
+                    return (
+                      <option key={index} value={n.typeId}>{n.typeName}</option>
+                    )
+                  })
+                )
+              }
+            })()}
+            </select>&nbsp;&nbsp;&nbsp;
+        ลักษณะความรู้สึก : <select onChange={this.handleFeelingChange.bind(this)}>
+            {(() => {
+              if (feeling) {
+                return (
+                  feeling.map((n, index) => {
+                    return (
+                      <option key={index} value={n.feelingId}>{n.feelingName}</option>
+                    )
+                  })
+                )
+              }
+            })()}
+            </select>&nbsp;&nbsp;&nbsp;
+            <button onClick={this.handleSearchButton.bind(this)}>ค้นหา</button>
+        </div>
         <table>
           <thead className='tablehead'>
             <tr>
@@ -26,10 +146,10 @@ class SoundTable extends React.Component {
               <th>ที่มา</th>
               <th>ประเภทเสียง</th>
               <th>ลักษณะอารมณ์ความรู้สึก</th>
-              <th colspan={2}>เพศชาย</th>
-              <th colspan={2}>เพศหญิง</th>
-              <th colspan={2}>อายุ 18-35 ปี</th>
-              <th colspan={2}>อายุ 36-60 ปี</th>
+              <th colSpan={2}>เพศชาย</th>
+              <th colSpan={2}>เพศหญิง</th>
+              <th colSpan={2}>อายุ 18-35 ปี</th>
+              <th colSpan={2}>อายุ 36-60 ปี</th>
               <th></th>
             </tr>
             <tr>
@@ -74,7 +194,7 @@ class SoundTable extends React.Component {
                             return (
                               <td>
                                 <button>แก้ไข</button>
-                                <button>ลบ</button>
+                                <button onClick={this.handleDeleteButton.bind(this, n.soundId)}>ลบ</button>
                               </td>
                              )
                           } else {
@@ -130,8 +250,12 @@ class SoundTable extends React.Component {
   }
 }
 
-const mapStateToProps = ({get_sound}) => ({
-  soundList: get_sound.data
+const mapStateToProps = ({get_sound, delete_sound, type, feeling, search_sound}) => ({
+  soundList: get_sound.data,
+  search_sound: search_sound.data,
+  delete_sound: delete_sound,
+  type: type.data,
+  feeling: feeling.data,
 })
 
 export default connect(mapStateToProps)(SoundTable)

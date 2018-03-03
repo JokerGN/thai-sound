@@ -1,17 +1,25 @@
 import React from 'react'
 import Router from 'next/router'
 import Link from 'next/link'
-import { mainAction, infoAction } from '../actions/selectAction'
+import { selectMainAction, selectInfoAction, selectLoginAction, selectRegisterAction} from '../actions/selectAction'
 import { connect } from 'react-redux'
 
 class IndexBar extends React.Component {
 
   handleMainPage() {
-    this.props.dispatch(mainAction())
+    this.props.dispatch(selectMainAction())
   }
 
   handleInfoPage() {
-    this.props.dispatch(infoAction())
+    this.props.dispatch(selectInfoAction())
+  }
+
+  handleLoginPage() {
+    this.props.dispatch(selectLoginAction())
+  }
+
+  handleRegisterPage() {
+    this.props.dispatch(selectRegisterAction())
   }
 
   render () {
@@ -21,12 +29,19 @@ class IndexBar extends React.Component {
         <ul>
           <li><p>Thai-sound</p></li>
           <li className="right">
-            <a href="#" onClick={this.handleInfoPage.bind(this)}>เกี่ยวกับเรา</a>
+            <a href="#" onClick={this.handleLoginPage.bind(this)}>เข้าสู่ระบบ</a>
           </li>
           <li className="right">
-            <Link href="/login">
-              <a>คลังเสียง</a>
-            </Link>
+            <a href="#" onClick={this.handleRegisterPage.bind(this)}>สมัครสมาชิก</a>
+          </li>
+          <li className="right">
+            <a href="#">ติดต่อเรา</a>
+          </li>
+          <li className="right">
+            <a href="#">เครื่องมือวัด</a>
+          </li>
+          <li className="right">
+            <a href="#" onClick={this.handleInfoPage.bind(this)}>เกี่ยวกับเรา</a>
           </li>
           <li className="right">
             <a href="#" onClick={this.handleMainPage.bind(this)}>หน้าหลัก</a>

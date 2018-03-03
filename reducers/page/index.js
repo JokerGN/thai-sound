@@ -7,6 +7,10 @@ export default function (state = initialState.page, action) {
       return state = action.page
     case types.INFO_SUCCESS:
       return state = action.page
+    case types.LOGIN_PAGE_SUCCESS:
+      return state = action.page
+    case types.REGISTER_PAGE_SUCCESS:
+      return state = action.page
     default:
       return state
   }
