@@ -26,14 +26,12 @@ class AddSoundForm extends React.Component {
     typeId: 1,
     sourceId: 1,
     feelingId: 1,
+    mean: '',
+    sd: '',
     maleMean: '',
-    maleSD: '',
     femaleMean: '',
-    femaleSD: '',
     teenageMean: '',
-    teenageSD: '',
     oldmanMean: '',
-    oldmaneSD: '',
     error: '',
     openError: false,
     openSuccess: false
@@ -45,7 +43,6 @@ class AddSoundForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
     if (nextProps.add_sound) {
       if (nextProps.add_sound.data.status == 200) {
         this.handleOpenSuccessDialog()
@@ -75,64 +72,50 @@ class AddSoundForm extends React.Component {
     this.setState({sourceId: e.target.value})
   }
 
-  handleMaleMean(e) {
-    this.setState({maleMean: e.target.value})
+  handleMeanChange(e) {
+    this.setState({mean: e.target.value})
   }
 
-  handleMaleSD(e) {
-    this.setState({maleSD: e.target.value})
+  handleSDChange(e) {
+    this.setState({sd: e.target.value})
+  }
+
+  handleMaleMean(e) {
+    this.setState({maleMean: e.target.value})
   }
 
   handleFemaleMean(e) {
     this.setState({femaleMean: e.target.value})
   }
 
-  handleFemaleSD(e) {
-    this.setState({femaleSD: e.target.value})
-  }
-
   handleTeenageMean(e) {
     this.setState({teenageMean: e.target.value})
-  }
-
-  handleTeenageSD(e) {
-    this.setState({teenageSD: e.target.value})
   }
 
   handleOldmanMean(e) {
     this.setState({oldmanMean: e.target.value})
   }
 
-  handleOldmanSD(e) {
-    this.setState({oldmanSD: e.target.value})
-  }
-
   handleSubmitButton() {
     if (this.state.sound == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.mean == '') {
+      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
+      this.handleOpenErrorDialog()
+    } else if (this.state.sd == '') {
       this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
       this.handleOpenErrorDialog()
     } else if (this.state.maleMean == '') {
       this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
       this.handleOpenErrorDialog()
-    } else if (this.state.maleSD == '') {
-      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
-      this.handleOpenErrorDialog()
     } else if (this.state.femaleMean == '') {
-      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
-      this.handleOpenErrorDialog()
-    } else if (this.state.femaleSD == '') {
       this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
       this.handleOpenErrorDialog()
     } else if (this.state.teenageMean == '') {
       this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
       this.handleOpenErrorDialog()
-    } else if (this.state.teenageSD == '') {
-      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
-      this.handleOpenErrorDialog()
     } else if (this.state.oldmanMean == '') {
-      this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
-      this.handleOpenErrorDialog()
-    } else if (this.state.oldSD == '') {
       this.setState({error: 'กรุณากรอกข้อมูลให้ครบถ้วน'})
       this.handleOpenErrorDialog()
     } else {
@@ -141,16 +124,15 @@ class AddSoundForm extends React.Component {
       payload.set('typeId', this.state.typeId)
       payload.set('sourceId', this.state.sourceId)
       payload.set('feelingId', this.state.feelingId)
+      payload.set('mean', this.state.mean)
+      payload.set('sd', this.state.sd)
       payload.set('maleMean', this.state.maleMean)
-      payload.set('maleSD', this.state.maleSD)
       payload.set('femaleMean', this.state.femaleMean)
-      payload.set('femaleSD', this.state.femaleSD)
       payload.set('teenageMean', this.state.teenageMean)
-      payload.set('teenageSD', this.state.teenageSD)
       payload.set('oldmanMean', this.state.oldmanMean)
-      payload.set('oldmanSD', this.state.oldmanSD)
       this.props.dispatch(addSoundAction(payload))
     }
+    console.log(this.state)
   }
 
   handleOpenErrorDialog() {
@@ -219,67 +201,104 @@ class AddSoundForm extends React.Component {
           <center><h2>
             เพิ่มเสียง
           </h2></center>
-          <form>
-            เลือกเสียง : <input type="file" onChange={this.handleSoundUpload.bind(this)}/><br />
-            ประเภทเสียง : <select onChange={this.handleTypeChange.bind(this)} >
-            {(() => {
-              if (type) {
-                return (
-                  type.rows.map((n, index) => {
+          <table><form>
+            <tr>
+              <td>เลือกเสียง : </td>
+              <td><input type="file" onChange={this.handleSoundUpload.bind(this)}/></td>
+            </tr>
+            <tr>
+              <td>ประเภทเสียง : </td>
+              <td><select onChange={this.handleTypeChange.bind(this)} >
+                {(() => {
+                  if (type) {
                     return (
-                      <option key={index} value={n.typeId}>{n.typeName}</option>
+                      type.rows.map((n, index) => {
+                        return (
+                          <option key={index} value={n.typeId}>{n.typeName}</option>
+                        )
+                      })
                     )
-                  })
-                )
-              }
-            })()}
-            </select><br />
-            ลักษณะความรู้สึก : <select onChange={this.handleFeelingChange.bind(this)}>
-            {(() => {
-              if (feeling) {
-                return (
-                  feeling.map((n, index) => {
+                  }
+                })()}
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>ลักษณะความรู้สึก : </td>
+              <td><select onChange={this.handleFeelingChange.bind(this)}>
+                {(() => {
+                  if (feeling) {
                     return (
-                      <option key={index} value={n.feelingId}>{n.feelingName}</option>
+                      feeling.map((n, index) => {
+                        return (
+                          <option key={index} value={n.feelingId}>{n.feelingName}</option>
+                        )
+                      })
                     )
-                  })
-                )
-              }
-            })()}
-            </select><br />
-            แหล่งที่มา : <select onChange={this.handleSourceChange.bind(this)}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select><br />
-            <h4>กลุ่มเพศชาย</h4>
-            ค่าเฉลี่ย : <input type='text' onChange={this.handleMaleMean.bind(this)} />&nbsp;&nbsp;&nbsp;
-            ส่วนเบี่ยงเบนมาตรฐาน : <input type='text' onChange={this.handleMaleSD.bind(this)} />
-            <br />
-            <h4>กลุ่มเพศหญิง</h4>
-            ค่าเฉลี่ย : <input type='text' onChange={this.handleFemaleMean.bind(this)} />&nbsp;&nbsp;&nbsp;
-            ส่วนเบี่ยงเบนมาตรฐาน : <input type='text' onChange={this.handleFemaleSD.bind(this)} />
-            <br />
-            <h4>กลุ่มอายุ 18 - 35 ปี</h4>
-            ค่าเฉลี่ย : <input type='text' onChange={this.handleTeenageMean.bind(this)} />&nbsp;&nbsp;&nbsp;
-            ส่วนเบี่ยงเบนมาตรฐาน : <input type='text' onChange={this.handleTeenageSD.bind(this)} />
-            <br />
-            <h4>กลุ่มอายุ 36 - 60 ปี</h4>
-            ค่าเฉลี่ย : <input type='text' onChange={this.handleOldmanMean.bind(this)} />&nbsp;&nbsp;&nbsp;
-            ส่วนเบี่ยงเบนมาตรฐาน : <input type='text' onChange={this.handleOldmanSD.bind(this)} />
-            <br /><br />
-            <center>
-              <button onClick={this.handleSubmitButton.bind(this)}>เพิ่มเสียง</button>
-              <button onClick={this.handleCancleButton.bind(this)}>ยกเลิก</button>
-            </center>
-          </form>
+                  }
+                })()}
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>แหล่งที่มา : </td>
+              <td>
+              <select onChange={this.handleSourceChange.bind(this)}>
+                <option value="1">1</option>
+              </select>
+              </td>
+            </tr>
+            <tr>
+              <td>ค่าเฉลี่ย : </td>
+              <td><input type='text' onChange={this.handleMeanChange.bind(this)} /></td>
+            </tr>
+            <tr>
+              <td>ส่วนเบียงเบนมาตรฐาน : </td>
+              <td><input type='text' onChange={this.handleSDChange.bind(this)} /></td>
+            </tr>
+            <tr>
+              <td colSpan={2}><h4>กลุ่มเพศชาย</h4></td>
+            </tr>
+            <tr>
+              <td>ค่าเฉลี่ย : </td>
+              <td><input type='text' onChange={this.handleMaleMean.bind(this)} /></td>
+            </tr>
+            <tr>
+              <td colSpan={2}><h4>กลุ่มเพศหญิง</h4></td>
+            </tr>
+            <tr>
+              <td>ค่าเฉลี่ย : </td>
+              <td><input type='text' onChange={this.handleFemaleMean.bind(this)} /></td>
+            </tr>
+            <tr>
+              <td colSpan={2}><h4>กลุ่มอายุ 18 - 35 ปี</h4></td>
+            </tr>
+            <tr>
+              <td>ค่าเฉลี่ย : </td>
+              <td><input type='text' onChange={this.handleTeenageMean.bind(this)} /></td>
+            </tr>
+           <tr>
+              <td colSpan={2}><h4>กลุ่มอายุ 36 - 60 ปี</h4></td>
+            </tr>
+            <tr>
+              <td>ค่าเฉลี่ย : </td>
+              <td><input type='text' onChange={this.handleOldmanMean.bind(this)} /></td>
+            </tr>
+            <tr>
+              <td colSpan={2}><center><br />
+                <button onClick={this.handleSubmitButton.bind(this)}>เพิ่มเสียง</button>
+                <button onClick={this.handleCancleButton.bind(this)}>ยกเลิก</button>
+                </center>
+              </td>
+            </tr>
+          </form></table>
         </div>
         <style jsx>{`
           .panel {
             display: inline-block;
             background: #ffffff;
             min-height: 100px;
-            height: 600px;
+            height: 700px;
             box-shadow:0px 0px 5px 5px #C9C9C9;
             -webkit-box-shadow:2px 2px 5px 5x #C9C9C9;
             -moz-box-shadow:2px 2px 5px 5px #C9C9C9;

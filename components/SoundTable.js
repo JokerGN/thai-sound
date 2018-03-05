@@ -141,15 +141,15 @@ class SoundTable extends React.Component {
         <table>
           <thead className='tablehead'>
             <tr>
-              <th>#</th>
+              <th>ลำดับที่</th>
               <th>เสียง</th>
+              <th>รหัสเสียง</th>
               <th>ที่มา</th>
               <th>ประเภทเสียง</th>
               <th>ลักษณะอารมณ์ความรู้สึก</th>
-              <th colSpan={2}>เพศชาย</th>
-              <th colSpan={2}>เพศหญิง</th>
-              <th colSpan={2}>อายุ 18-35 ปี</th>
-              <th colSpan={2}>อายุ 36-60 ปี</th>
+              <th>MEAN</th>
+              <th>SD</th>
+              <th colSpan={4}>MEAN แยกตามกลุ่มตัวอย่าง</th>
               <th></th>
             </tr>
             <tr>
@@ -158,14 +158,13 @@ class SoundTable extends React.Component {
               <th></th>
               <th></th>
               <th></th>
-              <th>Mean</th>
-              <th>SD</th>
-              <th>Mean</th>
-              <th>SD</th>
-              <th>Mean</th>
-              <th>SD</th>
-              <th>Mean</th>
-              <th>SD</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>เพศขาย</th>
+              <th>เพศหญิง</th>
+              <th>อายุ 18-35 ปี</th>
+              <th>อายุ 36-60 ปี</th>
               <th></th>
             </tr>
           </thead>
@@ -178,17 +177,16 @@ class SoundTable extends React.Component {
                       <tr key={index}>
                         <td>{index+1}</td>
                         <td><SoundPlayer soundUrl={serverUrl+'/sound/'+n.soundUrl}/></td>
+                        <td>{n.soundName}</td>
                         <td>{n.sourceId}</td>
                         <td>{n.type.typeName}</td>
                         <td>{n.feeling.feelingName}</td>
+                        <td>{n.mean}</td>
+                        <td>{n.sd}</td>
                         <td>{n.maleMean}</td>
-                        <td>{n.maleSD}</td>
                         <td>{n.femaleMean}</td>
-                        <td>{n.femaleSD}</td>
                         <td>{n.teenageMean}</td>
-                        <td>{n.teenageSD}</td>
                         <td>{n.oldmanMean}</td>
-                        <td>{n.oldmanSD}</td>
                         {(()=> {
                           if (role === 'admin') {
                             return (
