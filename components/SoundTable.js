@@ -23,7 +23,10 @@ class SoundTable extends React.Component {
     payload: {},
     typeId: 1,
     feelingId: 1,
-    search: false
+    search: false,
+    perpage: 10,
+    currentpage: 1,
+    firstRow: 0,
   }
 
   componentDidMount() {
@@ -78,8 +81,23 @@ class SoundTable extends React.Component {
     this.props.dispatch(searchSoundAction(payload))
   }
 
+  handleChangePage(page) {
+    if (page > this.state.currentpage) {
+      this.setState({firstRow: this.state.firstRow+this.state.perpage})
+    } else if (page < this.state.currentpage) {
+      this.setState({firstRow: this.state.firstRow-this.state.perpage})
+    }
+    this.setState({currentpage: page})
+  }
+
+  handleChangePerpage(e) {
+    this.setState({perpage: e.target.value})
+  }
+
   render() {
     let soundList = null
+    let total_page = 0
+    let pagination = []
     if (this.state.search) {
       soundList = this.props.search_sound
     } else {
@@ -88,6 +106,14 @@ class SoundTable extends React.Component {
     const feeling = this.props.feeling
     const type = this.props.type
     const role = Cookie.get('role')
+    if (soundList) {
+      let count = soundList.count
+      while ( count > 0) {
+        total_page++
+        pagination.push(total_page)
+        count = count - this.state.perpage
+      }
+    }
     return (
       <div>
         <Dialog
@@ -173,20 +199,22 @@ class SoundTable extends React.Component {
               if (soundList) {
                 return (
                   soundList.rows.map((n, index) => {
+                    let soundName = n.soundName.substring(0,9)
+                    if (index < (this.state.currentpage * this.state.perpage) && index >= this.state.firstRow) {
                     return (
                       <tr key={index}>
                         <td>{index+1}</td>
                         <td><SoundPlayer soundUrl={serverUrl+'/sound/'+n.soundUrl}/></td>
-                        <td>{n.soundName}</td>
+                        <td>{soundName}</td>
                         <td>{n.sourceId}</td>
                         <td>{n.type.typeName}</td>
                         <td>{n.feeling.feelingName}</td>
-                        <td>{n.mean}</td>
-                        <td>{n.sd}</td>
-                        <td>{n.maleMean}</td>
-                        <td>{n.femaleMean}</td>
-                        <td>{n.teenageMean}</td>
-                        <td>{n.oldmanMean}</td>
+                        <td>{n.mean.toFixed(2)}</td>
+                        <td>{n.sd.toFixed(2)}</td>
+                        <td>{n.maleMean.toFixed(2)}</td>
+                        <td>{n.femaleMean.toFixed(2)}</td>
+                        <td>{n.teenageMean.toFixed(2)}</td>
+                        <td>{n.oldmanMean.toFixed(2)}</td>
                         {(()=> {
                           if (role === 'admin') {
                             return (
@@ -203,12 +231,30 @@ class SoundTable extends React.Component {
                         })()}
                       </tr>
                     )
+                  }
                   })
                 )
               }
             })()}
           </tbody>
         </table>
+        <div className='pagination'>
+        {(() => {
+          if (total_page) {
+            return (
+              pagination.map((index) => {
+                return (
+                  <a href="#" key={index} onClick={this.handleChangePage.bind(this, index)}>{index}</a>
+                )
+              })
+            )
+          }
+        })()}
+        </div><br />
+        show : <select onChange={this.handleChangePerpage.bind(this)}>
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+        </select> rows
         <style jsx>{`
           table {
             width: 100%;
@@ -242,6 +288,26 @@ class SoundTable extends React.Component {
             background-color: white;
             cursor: pointer;
           }
+          .pagination {
+            display : inline-block;
+          }
+          .pagination a {
+            color: black;
+            float: left;
+            padding: 4px 8px;
+            text-decoration: none;
+            margin: 1px;
+            border: solid 0.2px;
+          }
+          .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+          }
+          .pagination a:hover:not(.active) {background-color: #ddd;}.pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+          }
+          .pagination a:hover:not(.active) {background-color: #ddd;}
         `}</style>
       </div>
     )
