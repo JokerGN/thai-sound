@@ -16,6 +16,11 @@ export const selectInsertAction = () => ({
   type: types.INSERT_REQUEST
 })
 
+export const selectEditAction = (payload) => ({
+  type: types.EDIT_SOUND_REQUEST,
+  payload: payload
+})
+
 export const selectMainAction = () => ({
   type: types.MAIN_REQUEST
 })

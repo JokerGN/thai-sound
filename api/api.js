@@ -101,6 +101,17 @@ export const addSoundData = (payload) => {
   })
 }
 
+export const updateSoundData = (payload) => {
+  return Axios({
+    method: 'POST',
+    url: `${serverUrl}/sound/update`,
+    data: payload
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
+
 export const deleteSoundData = (payload) => {
   return Axios({
     method: 'POST',

@@ -5,6 +5,7 @@ import { deleteSoundAction, clearDeleteSoundData, searchSoundAction} from '../ac
 import { getFeelingAction } from '../actions/getFeelingAction'
 import { getTypeAction } from '../actions/getTypeAction'
 import SoundPlayer from './SoundPlayer'
+import { selectEditAction } from '../actions/selectAction'
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -36,7 +37,6 @@ class SoundTable extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
     if (nextProps.delete_sound) {
       if (nextProps.delete_sound.data.status == 200) {
         this.props.dispatch(clearDeleteSoundData())
@@ -92,6 +92,14 @@ class SoundTable extends React.Component {
 
   handleChangePerpage(e) {
     this.setState({perpage: e.target.value})
+  }
+
+  handleEditSelect(soundId, typeId) {
+    let payload = {
+      soundId: soundId,
+      typeId: typeId
+    }
+    this.props.dispatch(selectEditAction(payload))
   }
 
   render() {
@@ -219,7 +227,7 @@ class SoundTable extends React.Component {
                           if (role === 'admin') {
                             return (
                               <td>
-                                <button>แก้ไข</button>
+                                <button onClick={this.handleEditSelect.bind(this, n.soundId, n.typeId)}>แก้ไข</button>
                                 <button onClick={this.handleDeleteButton.bind(this, n.soundId)}>ลบ</button>
                               </td>
                              )

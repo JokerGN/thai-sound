@@ -1,4 +1,4 @@
-import { put, takeLatest, takeEvery } from 'redux-saga/effects'
+import { put, takeLatest} from 'redux-saga/effects'
 import * as types from '../../constants/actionTypes'
 
 export default function* watchComponent() {
@@ -17,5 +17,13 @@ export default function* watchComponent() {
   yield takeLatest(types.INSERT_REQUEST, function* insert() {
     let component = 'insert'
     yield put({type: types.INSERT_SUCCESS, component})
+  })
+  yield takeLatest(types.EDIT_SOUND_REQUEST, function* edit_sound({payload}) {
+    let component = {
+      type: 'edit',
+      soundId: payload.soundId,
+      typeId: payload.typeId
+    }
+    yield put({type: types.EDIT_SOUND_SUCCESS, component})
   })
 }

@@ -22,3 +22,12 @@ export const searchSoundAction = (payload) => ({
   type: types.SEARCH_SOUND_REQUEST,
   payload: payload
 })
+
+export const editSoundAction = (payload) => ({
+  type: types.UPDATE_SOUND_REQUEST,
+  payload: payload
+})
+
+export const clearEditSoundData = () => ({
+  type: types.CLEAR_UPDATE_SOUND_DATA_REQUEST
+})
