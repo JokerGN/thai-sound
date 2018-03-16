@@ -132,7 +132,6 @@ class AddSoundForm extends React.Component {
       payload.set('oldmanMean', this.state.oldmanMean)
       this.props.dispatch(addSoundAction(payload))
     }
-    console.log(this.state)
   }
 
   handleOpenErrorDialog() {
