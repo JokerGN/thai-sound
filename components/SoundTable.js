@@ -25,13 +25,16 @@ class SoundTable extends React.Component {
     typeId: 1,
     feelingId: 1,
     search: false,
-    perpage: 10,
-    currentpage: 1,
-    firstRow: 0,
+    currentPage: 1,
+    offset: 0,
+    limit: 10,
   }
 
   componentDidMount() {
-    this.props.dispatch(getSoundAction())
+    this.props.dispatch(getSoundAction({
+      offset: this.state.offset,
+      limit: this.state.limit
+    }))
     this.props.dispatch(getTypeAction())
     this.props.dispatch(getFeelingAction({typeId: 1}))
   }
@@ -74,24 +77,53 @@ class SoundTable extends React.Component {
 
   handleSearchButton() {
     this.setState({search: true})
+    this.setState({currentPage: 1})
+    this.setState({offset: 0})
+    this.setState({limit: 10})
     let payload = {
       typeId: this.state.typeId,
-      feelingId: this.state.feelingId
+      feelingId: this.state.feelingId,
+      offset: 0,
+      limit: 10
     }
     this.props.dispatch(searchSoundAction(payload))
   }
 
   handleChangePage(page) {
-    if (page > this.state.currentpage) {
-      this.setState({firstRow: this.state.firstRow+this.state.perpage})
-    } else if (page < this.state.currentpage) {
-      this.setState({firstRow: this.state.firstRow-this.state.perpage})
+    this.setState({currentPage: page})
+    this.setState({offset: (page-1)*this.state.limit})
+    if (this.state.search) {
+      let payload = {
+        typeId: this.state.typeId,
+        feelingId: this.state.feelingId,
+        limit: this.state.limit,
+        offset: ((page - 1)*this.state.limit),
+      }
+      this.props.dispatch(searchSoundAction(payload))
+    } else {
+      this.props.dispatch(getSoundAction({
+        offset: ((page - 1)*this.state.limit),
+        limit: this.state.limit
+      }))
     }
-    this.setState({currentpage: page})
   }
 
   handleChangePerpage(e) {
-    this.setState({perpage: e.target.value})
+    this.setState({limit: e.target.value})
+    if (this.state.search) {
+      let payload = {
+        typeId: this.state.typeId,
+        feelingId: this.state.feelingId,
+        limit: e.target.value,
+        offset: this.state.offset,
+      }
+      this.props.dispatch(searchSoundAction(payload))
+    } else {
+      this.props.dispatch(getSoundAction({
+        offset: (this.state.offset),
+        limit: parseInt(e.target.value)
+      }))
+    }
   }
 
   handleEditSelect(soundId, typeId) {
@@ -119,7 +151,7 @@ class SoundTable extends React.Component {
       while ( count > 0) {
         total_page++
         pagination.push(total_page)
-        count = count - this.state.perpage
+        count = count - this.state.limit
       }
     }
     return (
@@ -175,7 +207,6 @@ class SoundTable extends React.Component {
         <table>
           <thead className='tablehead'>
             <tr>
-              <th>ลำดับที่</th>
               <th>เสียง</th>
               <th>รหัสเสียง</th>
               <th>ที่มา</th>
@@ -187,7 +218,6 @@ class SoundTable extends React.Component {
               <th></th>
             </tr>
             <tr>
-              <th></th>
               <th></th>
               <th></th>
               <th></th>
@@ -208,10 +238,8 @@ class SoundTable extends React.Component {
                 return (
                   soundList.rows.map((n, index) => {
                     let soundName = n.soundName.substring(0,9)
-                    if (index < (this.state.currentpage * this.state.perpage) && index >= this.state.firstRow) {
                     return (
                       <tr key={index}>
-                        <td>{index+1}</td>
                         <td><SoundPlayer soundUrl={serverUrl+'/sound/'+n.soundUrl}/></td>
                         <td>{soundName}</td>
                         <td>{n.sourceId}</td>
@@ -239,7 +267,6 @@ class SoundTable extends React.Component {
                         })()}
                       </tr>
                     )
-                  }
                   })
                 )
               }
@@ -252,7 +279,11 @@ class SoundTable extends React.Component {
             return (
               pagination.map((index) => {
                 return (
-                  <a href="#" key={index} onClick={this.handleChangePage.bind(this, index)}>{index}</a>
+                  <a href="#" className={(()=> {
+                    if ((index == (this.state.currentPage))) {
+                      return ('active')
+                    }
+                  })()} key={index+1} onClick={this.handleChangePage.bind(this, index)}>{index}</a>
                 )
               })
             )

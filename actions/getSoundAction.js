@@ -1,7 +1,8 @@
 import * as types from '../constants/actionTypes'
 
-export const getSoundAction = () => ({
-  type: types.GET_SOUND_REQUEST
+export const getSoundAction = (payload) => ({
+  type: types.GET_SOUND_REQUEST,
+  payload: payload
 })
 
 export const getSoundByIdAction = (payload) => ({

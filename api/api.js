@@ -45,10 +45,10 @@ export const changeStatusData = (payload) => {
   })
 }
 
-export const getSoundData = () => {
+export const getSoundData = (payload) => {
   return Axios({
     method: 'GET',
-    url: `${serverUrl}/sound/showall`
+    url: `${serverUrl}/sound/showall?offset=${payload.offset}&limit=${payload.limit}`
   })
   .then(function (res) {
     return res.data
