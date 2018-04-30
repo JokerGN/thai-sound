@@ -45,10 +45,10 @@ export const changeStatusData = (payload) => {
   })
 }
 
-export const getSoundData = () => {
+export const getSoundData = (payload) => {
   return Axios({
     method: 'GET',
-    url: `${serverUrl}/sound/showall`
+    url: `${serverUrl}/sound/showall?offset=${payload.offset}&limit=${payload.limit}`
   })
   .then(function (res) {
     return res.data
@@ -95,6 +95,17 @@ export const addSoundData = (payload) => {
     headers: {
       'Content-Type': undefined
     }
+  })
+  .then(function (res) {
+    return res.data
+  })
+}
+
+export const updateSoundData = (payload) => {
+  return Axios({
+    method: 'POST',
+    url: `${serverUrl}/sound/update`,
+    data: payload
   })
   .then(function (res) {
     return res.data

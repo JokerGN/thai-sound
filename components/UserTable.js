@@ -13,7 +13,6 @@ class UserTable extends React.Component {
     let payload = {
       email: email
     }
-    console.log(email)
     this.props.dispatch(changeStatusAction(payload))
     this.props.dispatch(getUserAction())
   }
