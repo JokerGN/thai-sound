@@ -7,6 +7,8 @@ import UserTable from './UserTable'
 import SoundTable from './SoundTable'
 import AddSoundForm from './AddSoundForm'
 import EditSoundForm from './EditSoundForm'
+import SoundChart from './SoundChart'
+import UserCount from './UserCount'
 import { selectInsertAction } from '../actions/selectAction'
 import {Grid, Col, Row} from 'react-styled-flexboxgrid'
 import Link from 'next/link'
@@ -39,7 +41,16 @@ class PageMenu extends React.Component {
           if (component === 'index') {
             return (
               <div>
-                <p>This is index content</p>
+                <Row>
+                <Col md={6}>
+                  <h3>ข้อมูลเสียงในระบบ</h3>
+                  <SoundChart />
+                </Col>
+                <Col md={6}>
+                  <h3>ข้อมูลผู้ใช้ในระบบ</h3>
+                  <UserCount />
+                </Col>
+                </Row>
               </div>
             )
           } else if (component === 'sound') {

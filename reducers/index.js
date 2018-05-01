@@ -5,6 +5,7 @@ import component from './component'
 import get_user from './get_user'
 import change_status from './change_status'
 import get_sound from './sound'
+import sound_analysis from './sound_analysis'
 import get_sound_id from './get_sound_id'
 import add_sound from './add_sound'
 import update_sound from './update_sound'
@@ -21,6 +22,7 @@ const rootReducer = combineReducers ({
   get_user,
   change_status,
   get_sound,
+  sound_analysis,
   get_sound_id,
   add_sound,
   update_sound,

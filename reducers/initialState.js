@@ -12,4 +12,5 @@ export default {
   update_sound: 0,
   delete_sound: 0,
   get_sound: [],
+  sound_analysis: [],
 }
